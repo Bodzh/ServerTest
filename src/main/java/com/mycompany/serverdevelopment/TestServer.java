@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ public class TestServer implements Runnable{
 //    TestServer() {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
+   private ArrayList<Contacts> contacts;
 
     @Override
     public void run() {
@@ -47,6 +49,11 @@ public class TestServer implements Runnable{
                     ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
                     ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
                     oos.writeUTF("PONG");
+                    try {
+                        ois.readObject();
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(TestServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     String command = ois.readUTF();
                     
                     switch (command) {
